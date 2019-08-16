@@ -15,6 +15,9 @@
 DRAC Lifecycle job specific methods
 """
 
+
+from time import sleep
+
 from oslo_log import log as logging
 from oslo_utils import importutils
 
@@ -80,3 +83,8 @@ def list_unfinished_jobs(node):
                   {'node_uuid': node.uuid,
                    'error': exc})
         raise exception.DracOperationError(error=exc)
+
+
+def wait_for_job_completion(node):
+    while list_unfinished_jobs(node):
+        sleep(10)

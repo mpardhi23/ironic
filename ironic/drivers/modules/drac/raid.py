@@ -278,7 +278,7 @@ def clear_foreign_config(node, raid_controller):
     :raises: DracOperationError on an error from python-dracclient.
     """
     try:
-
+        drac_job.wait_for_job_completion(node)
         drac_job.validate_job_queue(node)
 
         client = drac_common.get_drac_client(node)
@@ -678,7 +678,7 @@ def _assign_disks_to_volume(logical_disks, physical_disks_by_type,
         for disks_count in range(min_disks, candidate_max_disks + 1):
             if ('number_of_physical_disks' in logical_disk
                 and logical_disk['number_of_physical_disks'] != disks_count):
-                    continue
+                continue
 
             # skip invalid disks_count
             if disks_count != _usable_disks_count(logical_disk['raid_level'],
